@@ -1,1 +1,16 @@
-The goal of this branch is to implement connectionless players - a phenomenon which occurs if a player kills his client or force quits the game. In this case the player will stand motionless 20 seconds before it disappears.
+The goal of this branch is to implement connectionless players - a phenomenon which occurs if a player kills his client or force quits the game. In those cases the player will stand motionless 20 seconds before it disappears.
+
+Current status:
+=================
+There are 3 classes which are involved: Player, WorldSocket and WorldSession.
+Currently a WorldSocket creates a WorldSession on authenticating (WorldSocket.cpp WorldSocket::HandleAuthSession) and this WorldSession will create a instance of Player on login (CharacterHandler.cpp WorldSession::HandlePlayerLogin).
+To allow temporary player existence without an active connection, we have to either "disconnect" WorldSocket and WorldSession - that way we would have a Player with a WorldSession - or separate WorldSession and Player. The first option seems easier, since otherwise we would have to catch every Player::GetSession() and check if there is a session at all - and that function is currently used 498 times!
+In comparison to this, m_Socket is only used 5 times in WorldSession.cpp.
+
+The plan, aka TODO:
+=================
+* Don't delete WorldSession/Player on disconnect in some cases (still do so if the player waited the 20 seconds logout time or is in an inn/capital)
+* Keep WorldSession and Player alive for 20 seconds
+* Reuse session if there is a reconnect during that time
+* Remove player if resumed session logs in with another character
+* Remove player if resumed session doesn't log in with the pending character in those 20 seconds
