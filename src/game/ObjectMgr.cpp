@@ -47,6 +47,7 @@
 #include "GossipDef.h"
 #include "Mail.h"
 #include "InstanceData.h"
+#include "RuntimeStringFormatVerifier.h"
 
 #include <limits>
 
@@ -7476,6 +7477,11 @@ void ObjectMgr::LoadGameObjectForQuests()
 
     sLog.outString();
     sLog.outString( ">> Loaded %u GameObjects for quests", count );
+}
+
+bool ObjectMgr::LoadMangosStrings()
+{
+    return LoadMangosStrings(WorldDatabase,"mangos_string",MIN_MANGOS_STRING_ID,MAX_MANGOS_STRING_ID) && RuntimeVerifier::verifyAll<MAX_MANGOS_STRING_ID>();
 }
 
 bool ObjectMgr::LoadMangosStrings(DatabaseType& db, char const* table, int32 min_value, int32 max_value)

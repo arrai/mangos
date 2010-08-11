@@ -19,6 +19,85 @@
 #ifndef __MANGOS_LANGUAGE_H
 #define __MANGOS_LANGUAGE_H
 
+////////
+// begin template magic
+
+template <class T, class U>
+struct ArgumentList {
+    typedef T Head;
+    typedef U Tail;
+};
+
+class EndOfList
+{
+};
+
+template<int IDX>
+struct VerifiableIndex
+{
+    typedef EndOfList Parameter;
+};
+
+#define RESTRICT_TYPE_0(constant) template<> struct VerifiableIndex<constant> { typedef EndOfList Parameter;};
+
+#define RESTRICT_TYPE_0(constant) template<> struct VerifiableIndex<constant> { typedef EndOfList Parameter;};
+
+/*
+Autgenerated code. Code generating code:
+void recurse(int cur, int max){
+    cout << "ArgumentList<parm"<<cur<<", ";
+    if(cur<max)
+        recurse(++cur, max);
+    else
+        cout << "EndOfList";
+    cout << "> ";
+}
+int main(){
+    for(int i=1; i<30; ++i){
+        cout << "#define RESTRICT_TYPE_"<<i<<"(constant";
+        for(int j=1; j<=i;++j)
+            cout << ", parm"<<j;
+        cout << ") template<> struct VerifiableIndex<constant> { typedef ";
+        recurse(1, i);
+        cout << " Parameter;};" << endl;
+    }
+    return 0;
+}
+*/
+
+#define RESTRICT_TYPE_1(constant, parm1) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, EndOfList>  Parameter;};
+#define RESTRICT_TYPE_2(constant, parm1, parm2) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, EndOfList> >  Parameter;};
+#define RESTRICT_TYPE_3(constant, parm1, parm2, parm3) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, EndOfList> > >  Parameter;};
+#define RESTRICT_TYPE_4(constant, parm1, parm2, parm3, parm4) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, EndOfList> > > >  Parameter;};
+#define RESTRICT_TYPE_5(constant, parm1, parm2, parm3, parm4, parm5) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, EndOfList> > > > >  Parameter;};
+#define RESTRICT_TYPE_6(constant, parm1, parm2, parm3, parm4, parm5, parm6) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, EndOfList> > > > > >  Parameter;};
+#define RESTRICT_TYPE_7(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, EndOfList> > > > > > >  Parameter;};
+#define RESTRICT_TYPE_8(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, EndOfList> > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_9(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, EndOfList> > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_10(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, EndOfList> > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_11(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, EndOfList> > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_12(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, EndOfList> > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_13(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, EndOfList> > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_14(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, EndOfList> > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_15(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, EndOfList> > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_16(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, EndOfList> > > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_17(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16, parm17) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, ArgumentList<parm17, EndOfList> > > > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_18(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16, parm17, parm18) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, ArgumentList<parm17, ArgumentList<parm18, EndOfList> > > > > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_19(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16, parm17, parm18, parm19) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, ArgumentList<parm17, ArgumentList<parm18, ArgumentList<parm19, EndOfList> > > > > > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_20(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16, parm17, parm18, parm19, parm20) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, ArgumentList<parm17, ArgumentList<parm18, ArgumentList<parm19, ArgumentList<parm20, EndOfList> > > > > > > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_21(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16, parm17, parm18, parm19, parm20, parm21) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, ArgumentList<parm17, ArgumentList<parm18, ArgumentList<parm19, ArgumentList<parm20, ArgumentList<parm21, EndOfList> > > > > > > > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_22(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16, parm17, parm18, parm19, parm20, parm21, parm22) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, ArgumentList<parm17, ArgumentList<parm18, ArgumentList<parm19, ArgumentList<parm20, ArgumentList<parm21, ArgumentList<parm22, EndOfList> > > > > > > > > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_23(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16, parm17, parm18, parm19, parm20, parm21, parm22, parm23) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, ArgumentList<parm17, ArgumentList<parm18, ArgumentList<parm19, ArgumentList<parm20, ArgumentList<parm21, ArgumentList<parm22, ArgumentList<parm23, EndOfList> > > > > > > > > > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_24(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16, parm17, parm18, parm19, parm20, parm21, parm22, parm23, parm24) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, ArgumentList<parm17, ArgumentList<parm18, ArgumentList<parm19, ArgumentList<parm20, ArgumentList<parm21, ArgumentList<parm22, ArgumentList<parm23, ArgumentList<parm24, EndOfList> > > > > > > > > > > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_25(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16, parm17, parm18, parm19, parm20, parm21, parm22, parm23, parm24, parm25) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, ArgumentList<parm17, ArgumentList<parm18, ArgumentList<parm19, ArgumentList<parm20, ArgumentList<parm21, ArgumentList<parm22, ArgumentList<parm23, ArgumentList<parm24, ArgumentList<parm25, EndOfList> > > > > > > > > > > > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_26(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16, parm17, parm18, parm19, parm20, parm21, parm22, parm23, parm24, parm25, parm26) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, ArgumentList<parm17, ArgumentList<parm18, ArgumentList<parm19, ArgumentList<parm20, ArgumentList<parm21, ArgumentList<parm22, ArgumentList<parm23, ArgumentList<parm24, ArgumentList<parm25, ArgumentList<parm26, EndOfList> > > > > > > > > > > > > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_27(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16, parm17, parm18, parm19, parm20, parm21, parm22, parm23, parm24, parm25, parm26, parm27) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, ArgumentList<parm17, ArgumentList<parm18, ArgumentList<parm19, ArgumentList<parm20, ArgumentList<parm21, ArgumentList<parm22, ArgumentList<parm23, ArgumentList<parm24, ArgumentList<parm25, ArgumentList<parm26, ArgumentList<parm27, EndOfList> > > > > > > > > > > > > > > > > > > > > > > > > > >  Parameter;};
+#define RESTRICT_TYPE_28(constant, parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16, parm17, parm18, parm19, parm20, parm21, parm22, parm23, parm24, parm25, parm26, parm27, parm28) template<> struct VerifiableIndex<constant> { typedef ArgumentList<parm1, ArgumentList<parm2, ArgumentList<parm3, ArgumentList<parm4, ArgumentList<parm5, ArgumentList<parm6, ArgumentList<parm7, ArgumentList<parm8, ArgumentList<parm9, ArgumentList<parm10, ArgumentList<parm11, ArgumentList<parm12, ArgumentList<parm13, ArgumentList<parm14, ArgumentList<parm15, ArgumentList<parm16, ArgumentList<parm17, ArgumentList<parm18, ArgumentList<parm19, ArgumentList<parm20, ArgumentList<parm21, ArgumentList<parm22, ArgumentList<parm23, ArgumentList<parm24, ArgumentList<parm25, ArgumentList<parm26, ArgumentList<parm27, ArgumentList<parm28, EndOfList> > > > > > > > > > > > > > > > > > > > > > > > > > > >  Parameter;};
+
+
+// end template magic
+////////
+
 enum MangosStrings
 {
     // for chat commands
@@ -903,4 +982,16 @@ enum MangosStrings
     // `db_script_string` table index     2000000000-2000009999 (MIN_DB_SCRIPT_STRING_ID-MAX_DB_SCRIPT_STRING_ID)
     // For other tables maybe             2000010000-2147483647 (max index)
 };
+
+
+RESTRICT_TYPE_0(LANG_SELECT_CHAR_OR_CREATURE)
+RESTRICT_TYPE_0(LANG_SELECT_CREATURE)
+RESTRICT_TYPE_1(LANG_SYSTEMMESSAGE, char*)
+RESTRICT_TYPE_1(LANG_EVENTMESSAGE, char*)
+RESTRICT_TYPE_0(LANG_NO_HELP_CMD)
+RESTRICT_TYPE_0(LANG_NO_CMD)
+RESTRICT_TYPE_0(LANG_NO_SUBCMD)
+RESTRICT_TYPE_2(LANG_SUBCMDS_LIST, char*, char*)
+
+
 #endif

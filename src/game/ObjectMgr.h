@@ -686,7 +686,7 @@ class ObjectMgr
         void LoadCreatureMovementScripts();
 
         bool LoadMangosStrings(DatabaseType& db, char const* table, int32 min_value, int32 max_value);
-        bool LoadMangosStrings() { return LoadMangosStrings(WorldDatabase,"mangos_string",MIN_MANGOS_STRING_ID,MAX_MANGOS_STRING_ID); }
+        bool LoadMangosStrings();
         void LoadDbScriptStrings();
         void LoadCreatureLocales();
         void LoadCreatureTemplates();
