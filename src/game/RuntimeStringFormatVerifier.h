@@ -179,7 +179,7 @@ namespace StringVerify
 template<int64 IN>
 struct IntLimiter
 {
-    enum {Result = IN>LANG_MAX_USED_MANGOS_ID?IN:0};
+    enum {Result = IN>LANG_MAX_USED_MANGOS_ID?0:IN};
 };
 
 using namespace StringVerify;
@@ -202,6 +202,7 @@ class RuntimeVerifier
     ///
     static bool verifyAll()
     {
+        printf("verifying mangos string #%llu\n", IDX);
         for(int i=0; i< MAX_LOCALE; ++i)
         {
             const char* str = sObjectMgr.GetMangosString((int32)IDX, i);
@@ -216,12 +217,11 @@ class RuntimeVerifier
                 printf("'\n");
                 return false;
             }
-            printf("verified mangos string #%llu\n", IDX);
         }
 
         // 8^x = (2^3)^x = 2^(3*x) = 1 << (3*x)
 
-        // for first row starting at 1: 1
+        // for first row starting at 1= 1
         // OK, range 1..8
         const int64 indexInThisDepth = IDX - (MAXNUM_IN_DEPTH -(1<<(3*(DEPTH))));
 
@@ -248,6 +248,7 @@ class RuntimeVerifier<0, DEPTH, MAXNUM_IN_DEPTH>
     public:
     static bool verifyAll()
     {
+        printf("terminated execution\n");
         return true;
     }
 };
