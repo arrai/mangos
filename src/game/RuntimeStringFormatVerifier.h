@@ -24,13 +24,12 @@
 #include "Language.h"
 #include "ObjectMgr.h"
 
-struct RuntimeVerifier
+namespace StringVerify
 {
-    private:
-    static const char FLAG_CHARS[];
-
-    static bool isCharType(const char* chars, char c)
+    static const char FLAG_CHARS[]={'-', '+', ' ', '#', 0};
+    bool isFlag(char c)
     {
+        const char* chars = FLAG_CHARS;
         while(*chars)
         {
             if(*chars==c)
@@ -45,7 +44,7 @@ struct RuntimeVerifier
     /// next type. Based upon the ANSI-C specs from
     /// http://flash-gordon.me.uk/ansi.c.txt
     ///
-    static char getNextType(const char*& format)
+    char getNextType(const char*& format)
     {
         format =  strchr(format, '%');
         if(!format)
@@ -54,7 +53,7 @@ struct RuntimeVerifier
         ++format;
 
         // flags
-        while(*format && isCharType(FLAG_CHARS, *format))
+        while(*format && isFlag(*format))
             ++format;
 
         // width
@@ -70,7 +69,7 @@ struct RuntimeVerifier
         return *format;
     }
 
-    static void printUsedTypes(const char* format)
+    void printUsedTypes(const char* format)
     {
         while(format && *format)
         {
@@ -82,14 +81,14 @@ struct RuntimeVerifier
     }
 
     template <class ArgList>
-    static void printExpectedParameter()
+    void printExpectedParameter()
     {
         printf("%s ", typeid(typename ArgList::Head).name());
         printExpectedParameter<typename ArgList::Tail>();
     }
 
     template <class ArgList>
-    static bool internalVerify(const char* format)
+    bool internalVerify(const char* format)
     {
         // non existing mangos strings
         if(!format)
@@ -156,55 +155,101 @@ struct RuntimeVerifier
         return typeid(typename ArgList::Tail) == typeid(EndOfList);
     }
 
+    template<>
+    void printExpectedParameter<EndOfList>()
+    {
+    }
+
+    template<>
+    bool internalVerify<EndOfList>(const char* format)
+    {
+        if(format)
+            return getNextType(format) == 0;
+        // empty param list with empty format - ok
+        return true;
+    }
+};
+
+
+///
+/// Redirects specializations which exceed the maximum to 0.
+/// Due to the specialization of this case, this ends
+/// the verifyAll recursion.
+//
+template<int64 IN>
+struct IntLimiter
+{
+    enum {Result = IN>LANG_MAX_USED_MANGOS_ID?IN:0};
+};
+
+using namespace StringVerify;
+
+template<int64 IDX, int64 DEPTH, int64 MAXNUM_IN_DEPTH>
+class RuntimeVerifier
+{
+    private:
+    static const char FLAG_CHARS[];
+
     public:
     ///
     /// This is the template version of a simple for-loop.
-    /// "ANSI/ISO C++ conforming programs must not rely on a maximum [template] depth greater than 17"
-    /// Therefore we make 5 calls in each level. This allows us to make "\sum_{i=0}^{17-1} 1 * 5^i"
-    /// calls at all. This is enough to check all 2000000000 mangos reserved strings.
     ///
-    template<int IDX>
+    /// "ANSI/ISO C++ conforming programs must not rely on a maximum [template] depth greater than 17"
+    /// Therefore we make 8 calls in each level. This allows us to make "\sum_{i=0}^{17-1} 8^i"
+    /// calls at all - think about it as a tree. This is enough to check all 2000000000 mangos
+    /// reserved strings. We took 8 because this allows us to do static potency calculations
+    /// using the shift operator.
+    ///
     static bool verifyAll()
     {
         for(int i=0; i< MAX_LOCALE; ++i)
         {
-            const char* str = sObjectMgr.GetMangosString(IDX, i);
-            if(str && !internalVerify<typename VerifiableIndex<IDX>::Parameter>(str))
+            const char* str = sObjectMgr.GetMangosString((int32)IDX, i);
+            if(!str)
+               continue;
+            if(!internalVerify<typename VerifiableIndex<IDX>::Parameter>(str))
             {
-                printf("Failed to verify mangos_string entry #%u. Expected parameters are '", IDX);
+                printf("Failed to verify mangos_string entry #%llu. Expected parameters are '", IDX);
                 printExpectedParameter<typename VerifiableIndex<IDX>::Parameter>();
                 printf("' but used types are '");
                 printUsedTypes(str);
                 printf("'\n");
                 return false;
             }
+            printf("verified mangos string #%llu\n", IDX);
         }
-        return RuntimeVerifier::verifyAll<IDX-1>();
+
+        // 8^x = (2^3)^x = 2^(3*x) = 1 << (3*x)
+
+        // for first row starting at 1: 1
+        // OK, range 1..8
+        const int64 indexInThisDepth = IDX - (MAXNUM_IN_DEPTH -(1<<(3*(DEPTH))));
+
+
+        const int64 firstNextCallIndex = MAXNUM_IN_DEPTH +1+8*(indexInThisDepth-1);
+
+        const int64 maxInNextDepth = MAXNUM_IN_DEPTH + 1<<(3*(DEPTH+1));
+
+        return RuntimeVerifier<IntLimiter<firstNextCallIndex>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<IntLimiter<firstNextCallIndex+1>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<IntLimiter<firstNextCallIndex+2>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<IntLimiter<firstNextCallIndex+3>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<IntLimiter<firstNextCallIndex+4>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<IntLimiter<firstNextCallIndex+5>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<IntLimiter<firstNextCallIndex+6>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<IntLimiter<firstNextCallIndex+7>::Result, DEPTH+1, maxInNextDepth>::verifyAll();
+
     }
 };
 
-const char RuntimeVerifier::FLAG_CHARS[] = {'-', '+', ' ', '#', 0};
-
-template<>
-void RuntimeVerifier::printExpectedParameter<EndOfList>()
+template<int64 DEPTH, int64 MAXNUM_IN_DEPTH>
+class RuntimeVerifier<0, DEPTH, MAXNUM_IN_DEPTH>
 {
-}
-
-template<>
-bool RuntimeVerifier::internalVerify<EndOfList>(const char* format)
-{
-    if(format)
-        return getNextType(format) == 0;
-    // empty param list with empty format - ok
-    return true;
-}
-
-// verifier recursion termination
-template<>
-bool RuntimeVerifier::verifyAll<0>()
-{
-    return true;
-}
-
+    public:
+    static bool verifyAll()
+    {
+        return true;
+    }
+};
 
 #endif

@@ -976,6 +976,9 @@ enum MangosStrings
     // Use for not-in-offcial-sources patches
     //                                    10000-10999
 
+    // Keep this entry always at the bottom
+    LANG_MAX_USED_MANGOS_ID,
+
     // Use for custom patches             11000-11999
 
     // NOT RESERVED IDS                   12000-1999999999
