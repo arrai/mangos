@@ -32,10 +32,14 @@ class EndOfList
 {
 };
 
+class DontVerify
+{
+};
+
 template<int IDX>
 struct VerifiableIndex
 {
-    typedef EndOfList Parameter;
+    typedef DontVerify Parameter;
 };
 
 #define RESTRICT_TYPE_0(constant) template<> struct VerifiableIndex<constant> { typedef EndOfList Parameter;};

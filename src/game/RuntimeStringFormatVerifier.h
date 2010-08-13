@@ -155,8 +155,19 @@ namespace StringVerify
         return typeid(typename ArgList::Tail) == typeid(EndOfList);
     }
 
+    template <>
+    bool internalVerify<DontVerify>(const char* format)
+    {
+        return true;
+    }
+
     template<>
     void printExpectedParameter<EndOfList>()
+    {
+    }
+
+    template<>
+    void printExpectedParameter<DontVerify>()
     {
     }
 
@@ -176,20 +187,26 @@ namespace StringVerify
 /// Due to the specialization of this case, this ends
 /// the verifyAll recursion.
 //
-template<int64 IN>
-struct IntLimiter
-{
-    enum {Result = IN>LANG_MAX_USED_MANGOS_ID?0:IN};
-};
+#define LIMIT(x) ((x>LANG_MAX_USED_MANGOS_ID)?0:x)
 
 using namespace StringVerify;
 
-template<int64 IDX, int64 DEPTH, int64 MAXNUM_IN_DEPTH>
+/*
+
+../../../src/game/RuntimeStringFormatVerifier.h: In static member function ‘static bool RuntimeVerifier<IDX, DEPTH, MAXNUM_IN_DEPTH>::verifyAll() [with long long int IDX = -0x00001dc8e0e180000ll, long long int DEPTH = 6ll, long long int MAXNUM_IN_DEPTH = 1170971096078614528ll]’:
+../../../src/game/RuntimeStringFormatVerifier.h:237:   instantiated from ‘static bool RuntimeVerifier<IDX, DEPTH, MAXNUM_IN_DEPTH>::verifyAll() [with long long int IDX = -0x000000003bac31000ll, long long int DEPTH = 5ll, long long int MAXNUM_IN_DEPTH = 74835644416000ll]’
+../../../src/game/RuntimeStringFormatVerifier.h:237:   instantiated from ‘static bool RuntimeVerifier<IDX, DEPTH, MAXNUM_IN_DEPTH>::verifyAll() [with long long int IDX = -0x000000000003c6400ll, long long int DEPTH = 4ll, long long int MAXNUM_IN_DEPTH = 2283802624ll]’
+../../../src/game/RuntimeStringFormatVerifier.h:237:   instantiated from ‘static bool RuntimeVerifier<IDX, DEPTH, MAXNUM_IN_DEPTH>::verifyAll() [with long long int IDX = -0x00000000000001cc0ll, long long int DEPTH = 3ll, long long int MAXNUM_IN_DEPTH = 557568ll]’
+../../../src/game/RuntimeStringFormatVerifier.h:237:   instantiated from ‘static bool RuntimeVerifier<IDX, DEPTH, MAXNUM_IN_DEPTH>::verifyAll() [with long long int IDX = -0x00000000000000020ll, long long int DEPTH = 2ll, long long int MAXNUM_IN_DEPTH = 1088ll]’
+../../../src/game/RuntimeStringFormatVerifier.h:237:   instantiated from ‘static bool RuntimeVerifier<IDX, DEPTH, MAXNUM_IN_DEPTH>::verifyAll() [with long long int IDX = 2ll, long long int DEPTH = 1ll, long long int MAXNUM_IN_DEPTH = 16ll]’
+../../../src/game/RuntimeStringFormatVerifier.h:237:   instantiated from ‘static bool RuntimeVerifier<IDX, DEPTH, MAXNUM_IN_DEPTH>::verifyAll() [with long long int IDX = 1ll, long long int DEPTH = 0ll, long long int MAXNUM_IN_DEPTH = 1ll]’
+
+*/
+template<uint64 IDX, uint64 DEPTH, uint64 MAXNUM_IN_DEPTH>
 class RuntimeVerifier
 {
     private:
     static const char FLAG_CHARS[];
-
     public:
     ///
     /// This is the template version of a simple for-loop.
@@ -223,26 +240,27 @@ class RuntimeVerifier
 
         // for first row starting at 1= 1
         // OK, range 1..8
-        const int64 indexInThisDepth = IDX - (MAXNUM_IN_DEPTH -(1<<(3*(DEPTH))));
+        const uint64 indexInThisDepth = IDX - (MAXNUM_IN_DEPTH -(1<<(3*(DEPTH))));
 
+        const uint64 firstNextCallIndex = MAXNUM_IN_DEPTH +1+8*(indexInThisDepth-1);
 
-        const int64 firstNextCallIndex = MAXNUM_IN_DEPTH +1+8*(indexInThisDepth-1);
+        const uint64 maxInNextDepth = MAXNUM_IN_DEPTH + (1<<(3*(DEPTH+1)));
 
-        const int64 maxInNextDepth = MAXNUM_IN_DEPTH + 1<<(3*(DEPTH+1));
-
-        return RuntimeVerifier<IntLimiter<firstNextCallIndex>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
-            RuntimeVerifier<IntLimiter<firstNextCallIndex+1>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
-            RuntimeVerifier<IntLimiter<firstNextCallIndex+2>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
-            RuntimeVerifier<IntLimiter<firstNextCallIndex+3>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
-            RuntimeVerifier<IntLimiter<firstNextCallIndex+4>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
-            RuntimeVerifier<IntLimiter<firstNextCallIndex+5>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
-            RuntimeVerifier<IntLimiter<firstNextCallIndex+6>::Result, DEPTH+1, maxInNextDepth>::verifyAll() &&
-            RuntimeVerifier<IntLimiter<firstNextCallIndex+7>::Result, DEPTH+1, maxInNextDepth>::verifyAll();
+        return RuntimeVerifier<LIMIT(firstNextCallIndex), DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<LIMIT(firstNextCallIndex+1), DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<LIMIT(firstNextCallIndex+2), DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<LIMIT(firstNextCallIndex+3), DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<LIMIT(firstNextCallIndex+4), DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<LIMIT(firstNextCallIndex+5), DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<LIMIT(firstNextCallIndex+6), DEPTH+1, maxInNextDepth>::verifyAll() &&
+            RuntimeVerifier<LIMIT(firstNextCallIndex+7), DEPTH+1, maxInNextDepth>::verifyAll();
 
     }
 };
 
-template<int64 DEPTH, int64 MAXNUM_IN_DEPTH>
+#undef LIMIT
+
+template<uint64 DEPTH, uint64 MAXNUM_IN_DEPTH>
 class RuntimeVerifier<0, DEPTH, MAXNUM_IN_DEPTH>
 {
     public:

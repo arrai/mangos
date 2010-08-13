@@ -7481,7 +7481,7 @@ void ObjectMgr::LoadGameObjectForQuests()
 
 bool ObjectMgr::LoadMangosStrings()
 {
-    return LoadMangosStrings(WorldDatabase,"mangos_string",MIN_MANGOS_STRING_ID,MAX_MANGOS_STRING_ID) && RuntimeVerifier<1,0,1>::verifyAll();
+    return LoadMangosStrings(WorldDatabase,"mangos_string",MIN_MANGOS_STRING_ID,MAX_MANGOS_STRING_ID) && RuntimeVerifier<1,0,1>::verifyAll() && false;
 }
 
 bool ObjectMgr::LoadMangosStrings(DatabaseType& db, char const* table, int32 min_value, int32 max_value)
